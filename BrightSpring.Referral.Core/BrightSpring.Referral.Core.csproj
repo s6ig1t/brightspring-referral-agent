@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Core is the bottom of the dependency stack: plain domain models only.
+    No AI package references, no HTTP, no database driver — nothing here
+    should ever need to change because we swapped model providers or
+    storage. That is the point of keeping it separate: it is the one
+    project every other project can safely depend on without dragging
+    in the rest of the system.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BrightSpring.Referral.Core</RootNamespace>
+  </PropertyGroup>
+
+</Project>

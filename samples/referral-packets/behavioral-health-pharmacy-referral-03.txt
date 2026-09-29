@@ -1,0 +1,43 @@
+--- Page 1 ---
+MERIDIAN BEHAVIORAL HEALTH & PHARMACY SERVICES
+COORDINATED CARE REFERRAL
+
+Patient: Dana Ruiz
+Age: 45
+Referring Service: Behavioral Health with Pharmacy Coordination
+Referring Physician: Dr. S. Patel, Community Behavioral Health Clinic
+
+Reason for Referral: Patient with major depressive disorder and
+generalized anxiety disorder, recently started on updated medication
+regimen. Referred for pharmacy medication management coordination
+alongside ongoing behavioral health services.
+
+--- Page 2 ---
+DOCUMENTED ALLERGIES
+- Sulfa drugs: reaction documented as rash.
+
+CURRENT MEDICATION LIST (per clinic note)
+1. Escitalopram 20mg, oral, once daily — for depression/anxiety
+2. Lisinopril 80mg, oral, once daily — for hypertension, dose increased
+   at last visit per clinic note
+3. Ibuprofen 600mg, oral, three times daily as needed — for chronic
+   knee pain
+4. Sulfamethoxazole-trimethoprim 800mg, oral, twice daily — prescribed
+   ten days ago for a urinary tract infection
+
+--- Page 3 ---
+DIAGNOSES
+- Major depressive disorder
+- Generalized anxiety disorder
+- Hypertension
+- Chronic knee pain, osteoarthritis
+- Urinary tract infection, recently treated
+
+PLAN
+Behavioral health follow-up in 2 weeks. Pharmacy to review full
+medication list for interactions and confirm all recent prescriptions
+are appropriate given documented allergy history before dispensing
+continues.
+
+Referral submitted by: Care Coordination Team
+Date: 09/22/2026

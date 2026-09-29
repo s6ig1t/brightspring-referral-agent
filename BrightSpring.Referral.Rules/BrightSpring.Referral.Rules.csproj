@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Rules is the deterministic heart of the project: duplicate-therapy,
+    dose-range, allergy-conflict and high-risk-combination checks.
+
+    Deliberately, this project references ONLY Core. No AI package, no
+    HTTP client, nothing non-deterministic. That is not a style choice —
+    it is the enforcement mechanism for the design rule this whole
+    project is built around: "the model never touches the math." If this
+    project ever needed an AI package reference to do its job, the rule
+    would already be broken.
+
+    Because every rule here is plain C# with no external dependency, the
+    whole engine is fully unit-testable without mocking an LLM, a
+    database, or the network. See BrightSpring.Referral.Rules.Tests.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BrightSpring.Referral.Rules</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BrightSpring.Referral.Core\BrightSpring.Referral.Core.csproj" />
+  </ItemGroup>
+
+</Project>

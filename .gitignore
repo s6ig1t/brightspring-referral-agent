@@ -1,0 +1,17 @@
+## .NET
+bin/
+obj/
+*.user
+
+## Visual Studio
+.vs/
+
+## User secrets are per-machine and never committed.
+## The Claude API key lives in `dotnet user-secrets` locally, or in a
+## real secrets manager / CI-CD injected environment variable in any
+## non-local environment. See README.md "Configuration" section.
+secrets.json
+
+## OS cruft
+.DS_Store
+Thumbs.db

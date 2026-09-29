@@ -1,0 +1,43 @@
+--- Page 1 ---
+BRIGHTPATH HOME HEALTH SERVICES
+REFERRAL FOR HOME HEALTH EVALUATION
+
+Patient: Eleanor Whitfield
+Age: 78
+Referring Service: Home Health (post-hospitalization, hip fracture)
+Referring Physician: Dr. R. Okonkwo, Riverside Orthopedics
+
+Reason for Referral: Patient discharged from Riverside Medical Center
+following ORIF of left hip fracture. Requires skilled nursing visits for
+wound care, PT for gait training, and medication reconciliation given
+multiple prescribers involved in recent hospitalization.
+
+--- Page 2 ---
+DOCUMENTED ALLERGIES
+- Penicillin: reaction documented as hives and facial swelling.
+- No known food allergies.
+
+CURRENT MEDICATION LIST (per discharge summary)
+1. Lisinopril 10mg, oral, once daily — home medication, cardiology
+2. Enalapril 5mg, oral, once daily — added during hospitalization for
+   blood pressure control, per hospitalist note
+3. Metoprolol 50mg, oral, twice daily
+4. Amoxicillin 500mg, oral, three times daily — prescribed for surgical
+   site infection prophylaxis
+5. Warfarin 5mg, oral, once daily — home anticoagulant, atrial fibrillation
+6. Aspirin 81mg, oral, once daily — home medication, continued post-op
+
+--- Page 3 ---
+DIAGNOSES
+- Left femoral neck fracture, status post ORIF
+- Atrial fibrillation, on chronic anticoagulation
+- Hypertension
+- Osteoarthritis
+
+PLAN
+Home health nursing 2x/week for wound checks. PT 3x/week for 4 weeks.
+Please review medication list for reconciliation prior to first visit;
+multiple prescribers were involved during the inpatient stay.
+
+Referral submitted by: Case Management, Riverside Medical Center
+Date: 09/12/2026

@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BrightSpring Referral Demo — Intake &amp; Review</title>
+<style>
+  :root {
+    --ink: #1f2a24;
+    --muted: #5b6b62;
+    --paper: #f4f2ee;
+    --card: #ffffff;
+    --line: #dfe3df;
+    --accent: #2f5c4c;
+    --accent-hover: #274c3f;
+    --critical: #a3372c;
+    --critical-bg: #fbeceb;
+    --caution: #8a6d1f;
+    --caution-bg: #faf3df;
+    --ok: #2f5c4c;
+    --ok-bg: #eaf1ee;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    padding: 48px 24px 96px;
+  }
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 36px 40px;
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 2rem;
+    margin: 0 0 12px;
+  }
+  h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 1.25rem;
+    margin: 0 0 16px;
+  }
+  p.tagline {
+    color: var(--muted);
+    margin: 0 0 28px;
+    max-width: 60ch;
+  }
+  label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  input[type="text"], textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.95rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: var(--ink);
+    background: #fff;
+  }
+  textarea {
+    min-height: 220px;
+    resize: vertical;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+  }
+  .row { margin-bottom: 20px; }
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .sample-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+  button, .file-label {
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .btn-secondary {
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    border-radius: 6px;
+    padding: 8px 14px;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-primary {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    border-radius: 6px;
+    padding: 12px 22px;
+    font-weight: 600;
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:disabled { background: #9fb0a8; cursor: not-allowed; }
+  #status-line {
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    min-height: 1.2em;
+  }
+  #status-line.error { color: var(--critical); }
+
+  #results { display: none; }
+  .patient-summary {
+    font-size: 1.05rem;
+    margin-bottom: 4px;
+  }
+  .brief-id {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    margin-bottom: 24px;
+  }
+  .finding {
+    border-left: 4px solid var(--line);
+    padding: 10px 16px;
+    margin-bottom: 10px;
+    border-radius: 0 6px 6px 0;
+    background: #fafaf9;
+  }
+  .finding.Critical { border-left-color: var(--critical); background: var(--critical-bg); }
+  .finding.Caution { border-left-color: var(--caution); background: var(--caution-bg); }
+  .finding.Info { border-left-color: var(--ok); background: var(--ok-bg); }
+  .finding-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 4px;
+  }
+  .finding-header .severity.Critical { color: var(--critical); }
+  .finding-header .severity.Caution { color: var(--caution); }
+  .finding-header .severity.Info { color: var(--ok); }
+  .finding p { margin: 0; font-size: 0.9rem; }
+  .citations { margin-top: 6px; font-size: 0.78rem; color: var(--muted); }
+  .citations code { background: rgba(0,0,0,0.05); padding: 1px 4px; border-radius: 3px; }
+  .no-findings {
+    background: var(--ok-bg);
+    color: var(--ok);
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+  }
+  .narrative {
+    white-space: pre-wrap;
+    font-size: 0.95rem;
+    background: #fafaf9;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 16px 18px;
+  }
+  .review-form {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .review-form .row { margin-bottom: 0; flex: 1 1 220px; }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .badge.PendingReview { background: var(--caution-bg); color: var(--caution); }
+  .badge.Approved { background: var(--ok-bg); color: var(--ok); }
+  .badge.Rejected { background: var(--critical-bg); color: var(--critical); }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.78rem;
+    margin-top: 32px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="card">
+    <h1>Referral intake &amp; review</h1>
+    <p class="tagline">
+      Paste (or load a sample) referral document below. It's extracted with page-and-snippet
+      citations, checked against deterministic clinical rules, and drafted into a review brief —
+      nothing is finalized until a named reviewer approves or rejects it below.
+    </p>
+
+    <div class="row">
+      <label for="source-name">Source document name</label>
+      <input type="text" id="source-name" value="home-health-referral-01.txt" />
+    </div>
+
+    <div class="row">
+      <label for="file-input">Upload a referral file (.txt)</label>
+      <input type="file" id="file-input" accept=".txt,.md,text/plain" />
+    </div>
+
+    <div class="row">
+      <label for="document-text">Referral document text</label>
+      <textarea id="document-text" placeholder="Paste referral text here, load a sample below, or choose a file above…"></textarea>
+    </div>
+
+    <div class="controls">
+      <div class="sample-picker">
+        <button class="btn-secondary" type="button" data-sample="home-health-referral-01.txt">Sample: Home health</button>
+        <button class="btn-secondary" type="button" data-sample="hospice-referral-02.txt">Sample: Hospice</button>
+        <button class="btn-secondary" type="button" data-sample="behavioral-health-pharmacy-referral-03.txt">Sample: Behavioral health</button>
+      </div>
+      <button class="btn-primary" id="run-btn" type="button">Run intake &amp; review</button>
+    </div>
+    <div id="status-line"></div>
+  </div>
+
+  <div class="card" id="results">
+    <h2>Review brief</h2>
+    <div class="patient-summary" id="patient-summary"></div>
+    <div class="brief-id" id="brief-id"></div>
+
+    <div id="findings-list"></div>
+
+    <h2 style="margin-top:28px;">Narrative summary</h2>
+    <div class="narrative" id="narrative-text"></div>
+
+    <h2 style="margin-top:28px;">Reviewer decision <span class="badge" id="status-badge"></span></h2>
+    <div class="review-form">
+      <div class="row">
+        <label for="reviewer-name">Reviewer name</label>
+        <input type="text" id="reviewer-name" placeholder="e.g. J. Alvarez, PharmD" />
+      </div>
+      <div class="row">
+        <label for="reviewer-notes">Notes (optional)</label>
+        <input type="text" id="reviewer-notes" placeholder="Optional note" />
+      </div>
+      <button class="btn-primary" id="approve-btn" type="button">Approve</button>
+      <button class="btn-secondary" id="reject-btn" type="button">Reject</button>
+    </div>
+    <div id="review-status-line" style="margin-top:10px; font-size:0.85rem; color:var(--muted);"></div>
+  </div>
+
+  <footer>
+    Synthetic demo data only. Not affiliated with or reviewed by BrightSpring Health Services.
+  </footer>
+</div>
+
+<script>
+  const el = (id) => document.getElementById(id);
+  let currentBriefId = null;
+
+  // Sample buttons fetch the raw .txt straight from wwwroot/samples/, so
+  // this page has no server-side dependency beyond the referral API
+  // itself — it's just another static file served alongside index.html.
+  document.querySelectorAll("[data-sample]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const file = btn.getAttribute("data-sample");
+      setStatus(`Loading ${file}…`);
+      try {
+        const res = await fetch(`samples/${file}`);
+        if (!res.ok) throw new Error(`Could not load sample (${res.status})`);
+        el("document-text").value = await res.text();
+        el("source-name").value = file;
+        setStatus("");
+      } catch (err) {
+        setStatus(err.message, true);
+      }
+    });
+  });
+
+  // File picker: reads the chosen file entirely client-side via
+  // FileReader — no upload to the server happens here. The API only
+  // ever sees the plain text that ends up in the textarea, submitted
+  // as a normal JSON field on "Run intake & review", exactly the same
+  // as if it had been pasted or loaded from a sample.
+  el("file-input").addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setStatus(`Reading ${file.name}…`);
+    const reader = new FileReader();
+    reader.onload = () => {
+      el("document-text").value = reader.result;
+      el("source-name").value = file.name;
+      setStatus("");
+    };
+    reader.onerror = () => {
+      setStatus(`Could not read ${file.name}: ${reader.error?.message ?? "unknown error"}`, true);
+    };
+    reader.readAsText(file);
+  });
+
+  el("run-btn").addEventListener("click", async () => {
+    const documentText = el("document-text").value.trim();
+    if (!documentText) {
+      setStatus("Paste or load a referral document first.", true);
+      return;
+    }
+
+    setRunning(true);
+    setStatus("Running intake extraction, rules evaluation, and narrative drafting…");
+    el("results").style.display = "none";
+
+    try {
+      const res = await fetch("referrals/intake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sourceDocumentName: el("source-name").value || "referral.txt",
+          documentText,
+        }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Intake failed (${res.status}): ${text || res.statusText}`);
+      }
+
+      const brief = await res.json();
+      renderBrief(brief);
+      setStatus("Done. Review the brief below before approving or rejecting.");
+    } catch (err) {
+      setStatus(err.message, true);
+    } finally {
+      setRunning(false);
+    }
+  });
+
+  el("approve-btn").addEventListener("click", () => submitDecision("approve"));
+  el("reject-btn").addEventListener("click", () => submitDecision("reject"));
+
+  async function submitDecision(action) {
+    const reviewerName = el("reviewer-name").value.trim();
+    if (!reviewerName) {
+      setReviewStatus("Reviewer name is required.", true);
+      return;
+    }
+    if (!currentBriefId) return;
+
+    setReviewStatus(`Submitting ${action}…`);
+    try {
+      const res = await fetch(`referrals/${currentBriefId}/${action}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          reviewerName,
+          notes: el("reviewer-notes").value.trim() || null,
+        }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`${action} failed (${res.status}): ${text || res.statusText}`);
+      }
+
+      const brief = await res.json();
+      renderBrief(brief, /*preserveScroll*/ true);
+      setReviewStatus(`Brief ${brief.status.toLowerCase()} by ${brief.reviewedBy}.`);
+    } catch (err) {
+      setReviewStatus(err.message, true);
+    }
+  }
+
+  function renderBrief(brief) {
+    currentBriefId = brief.briefId;
+    el("results").style.display = "block";
+    el("patient-summary").textContent = brief.patientSummary;
+    el("brief-id").textContent = `${brief.briefId}  ·  referral ${brief.referralId}`;
+
+    const list = el("findings-list");
+    list.innerHTML = "";
+    if (!brief.findings || brief.findings.length === 0) {
+      list.innerHTML = '<div class="no-findings">No findings — this referral did not trigger any automated checks.</div>';
+    } else {
+      brief.findings.forEach((f) => {
+        const div = document.createElement("div");
+        div.className = `finding ${f.severity}`;
+        const citations = (f.citations || [])
+          .map((c) => `<code>${escapeHtml(c.sourceDocument)} p.${c.pageNumber}</code> "${escapeHtml(c.snippet)}"`)
+          .join("<br/>");
+        div.innerHTML = `
+          <div class="finding-header">
+            <span>${escapeHtml(f.category)}</span>
+            <span class="severity ${f.severity}">${f.severity}</span>
+          </div>
+          <p>${escapeHtml(f.description)}</p>
+          ${citations ? `<div class="citations">${citations}</div>` : ""}
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    el("narrative-text").textContent = brief.narrativeSummary;
+
+    const badge = el("status-badge");
+    badge.textContent = brief.status;
+    badge.className = `badge ${brief.status}`;
+
+    // Once a brief is approved or rejected, the API itself refuses a
+    // second transition — mirror that here by disabling the buttons
+    // rather than letting the user hit an error round-trip.
+    const decided = brief.status !== "PendingReview";
+    el("approve-btn").disabled = decided;
+    el("reject-btn").disabled = decided;
+    setReviewStatus(decided
+      ? `Already ${brief.status.toLowerCase()} by ${brief.reviewedBy}.`
+      : "");
+  }
+
+  function setStatus(message, isError) {
+    const line = el("status-line");
+    line.textContent = message;
+    line.className = isError ? "error" : "";
+  }
+
+  function setReviewStatus(message, isError) {
+    const line = el("review-status-line");
+    line.textContent = message;
+    line.style.color = isError ? "var(--critical)" : "var(--muted)";
+  }
+
+  function setRunning(running) {
+    el("run-btn").disabled = running;
+    el("run-btn").textContent = running ? "Running…" : "Run intake & review";
+  }
+
+  function escapeHtml(str) {
+    const d = document.createElement("div");
+    d.textContent = str ?? "";
+    return d.innerHTML;
+  }
+</script>
+</body>
+</html>

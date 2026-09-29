@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Agents is the ONLY project allowed to talk to a language model. That
+    is a design boundary, not a coincidence of where the code happened
+    to land: Core and Rules have zero knowledge that AI exists at all,
+    which is what makes the deterministic math independently trustworthy.
+
+    Two package families show up here:
+
+      - Microsoft.Extensions.AI      -> the abstraction (IChatClient).
+                                         This is the "backend-agnostic
+                                         framework" half: code written
+                                         against IChatClient doesn't know
+                                         or care whether the requests end
+                                         up at Claude, Azure OpenAI, or a
+                                         local model.
+
+      - Microsoft.Agents.AI          -> agent orchestration on top of
+                                         that abstraction: turning an
+                                         IChatClient plus instructions
+                                         and tools into a runnable agent,
+                                         and composing multiple agents
+                                         into a workflow.
+
+    The client that actually implements IChatClient for Claude
+    (ClaudeChatClient.cs) is the "provider-specific client" half of that
+    same distinction: the framework doesn't know about Claude, but the
+    client we hand it does.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BrightSpring.Referral.Agents</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      IOptions<ClaudeChatClientOptions> (used in ClaudeChatClient.cs) lives
+      in Microsoft.Extensions.Options, not in Microsoft.Extensions.AI —
+      easy to miss since AI packages don't drag it in transitively here.
+    -->
+    <PackageReference Include="Microsoft.Agents.AI" Version="1.22.0" />
+    <PackageReference Include="Microsoft.Agents.AI.Anthropic" Version="1.22.0-preview.260918.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
+    <!--
+      System.Net.Http.Json is NOT referenced explicitly: on net10.0 it
+      ships as part of the shared framework, so an explicit
+      PackageReference only produces an NU1510 "will not be pruned"
+      warning. PostAsJsonAsync/ReadFromJsonAsync (used in
+      ClaudeChatClient.cs) are available without it.
+    -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BrightSpring.Referral.Core\BrightSpring.Referral.Core.csproj" />
+    <ProjectReference Include="..\BrightSpring.Referral.Rules\BrightSpring.Referral.Rules.csproj" />
+  </ItemGroup>
+
+</Project>
